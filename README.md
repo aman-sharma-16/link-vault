@@ -88,7 +88,7 @@ All endpoints that require authentication expect the JWT in the Authorization he
 | `POST` | `/login` | Authenticate user and return JWT. |
 | `GET` | `/vault` | Get all links in the vault (authenticated). |
 | `POST` | `/vault` | Add a new link. |
-| `PATCH` | `/vault/:id` | delete a link. |
+| `PATCH` | `/vault/:id` | delete a link (authenticated). |
 
 ## Folder Structure 📂
 
