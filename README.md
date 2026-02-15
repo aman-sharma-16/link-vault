@@ -1,134 +1,107 @@
-Link Vault 🔒
+# Link Vault 🔒
 
 A secure, user-friendly web application to store, manage, and share your sensitive links and credentials. Link Vault provides encrypted storage for your personal and work-related URLs, keeping them safe and easily accessible.
 
-Features ✨
+## Features ✨
 
-Secure Vaults: Store your links and credentials safely with password protection.
+* **Secure Vaults:** Store your links and credentials safely with password protection.
+* **Encrypted Storage:** All sensitive data is encrypted before storage.
+* **User Authentication:** Signup and login system with JWT-based authentication.
+* **Organized Management:** Categorize and organize links for easy retrieval.
+* **Link Sharing:** Share links securely with specific users (optional future feature).
+* **Responsive Design:** Works on both desktop and mobile devices.
+* **Download & Export:** Download your vault data securely for backup.
 
-Encrypted Storage: All sensitive data is encrypted before storage.
+## Tech Stack 🛠️
 
-User Authentication: Signup and login system with JWT-based authentication.
+* **Frontend:** React, Tailwind CSS ,react-icons
+* **Backend:** Node.js, Express.js,Zod,helmet,cors,multer
+* **Database:** MongoDB
+* **Authentication:** JWT (Bearer tokens)
+* **Encryption:** bcrypt (passwords)
 
-Organized Management: Categorize and organize links for easy retrieval.
+## Installation 💻
 
-Link Sharing: Share links securely with specific users (optional future feature).
+### Backend Setup
 
-Responsive Design: Works on both desktop and mobile devices.
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/your-username/link-vault.git](https://github.com/your-username/link-vault.git)
+    cd link-vault/backend
+    ```
 
-Download & Export: Download your vault data securely for backup.
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-Tech Stack 🛠️
+3.  **Create a `.env` file:**
+    Create a file named `.env` in the root of the backend folder and add:
+    ```env
+    PORT=3000
+    JWT_SECRET=your_jwt_secret
+    DATABASE_URL=your_db_url
+    ```
 
-Frontend: React, Tailwind CSS, Zustand/Redux (state management)
+4.  **Start the backend server:**
+    ```bash
+    npm run dev
+    ```
 
-Backend: Node.js, Express.js, FastAPI (optional), Socket.IO (for live updates)
+### Frontend Setup
 
-Database: SQLite / MongoDB (based on your choice)
+1.  **Navigate to frontend folder:**
+    ```bash
+    cd ../frontend
+    ```
 
-Authentication: JWT (Bearer tokens)
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-Encryption: bcrypt (passwords), AES/other symmetric encryption (vault data)
+3.  **Start the frontend server:**
+    ```bash
+    npm start
+    ```
 
-Installation 💻
-Backend
+4.  **Access the App:**
+    Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-Clone the repository:
+## Usage 📝
 
-git clone https://github.com/your-username/link-vault.git
-cd link-vault/backend
+* **Signup:** Create a new account using your email and username.
+* **Login:** Enter your credentials to access your vault.
+* **Add Links:** Store links along with optional passwords or notes.
+* **View Vault:** Access all saved links securely.
+* **Download Vault:** Export your vault for backup purposes.
+* **Logout:** Safely end your session.
 
-
-Install dependencies:
-
-npm install
-
-
-Create a .env file:
-
-PORT=5000
-JWT_SECRET=your_jwt_secret
-DATABASE_URL=your_db_url
-
-
-Start the backend server:
-
-npm run dev
-
-Frontend
-
-Navigate to frontend folder:
-
-cd ../frontend
-
-
-Install dependencies:
-
-npm install
-
-
-Start the frontend server:
-
-npm start
-
-
-Open http://localhost:3000 in your browser.
-
-Usage 📝
-
-Signup: Create a new account using your email and username.
-
-Login: Enter your credentials to access your vault.
-
-Add Links: Store links along with optional passwords or notes.
-
-View Vault: Access all saved links securely.
-
-Download Vault: Export your vault for backup purposes.
-
-Logout: Safely end your session.
-
-API Endpoints 🔗
-
-POST /signup – Create a new user.
-
-POST /login – Authenticate user and return JWT.
-
-GET /vault – Get all links in the vault (authenticated).
-
-POST /vault – Add a new link.
-
-PUT /vault/:id – Update a link.
-
-DELETE /vault/:id – Delete a link.
+## API Endpoints 🔗
 
 All endpoints that require authentication expect the JWT in the Authorization header:
+`Authorization: Bearer <token>`
 
-Authorization: Bearer <token>
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/signup` | Create a new user. |
+| `POST` | `/login` | Authenticate user and return JWT. |
+| `GET` | `/vault` | Get all links in the vault (authenticated). |
+| `POST` | `/vault` | Add a new link. |
+| `PATCH` | `/vault/:id` | delete a link. |
 
-Folder Structure 📂
+## Folder Structure 📂
+
+```plaintext
 link-vault/
 ├─ backend/
-│  ├─ controllers/
-│  ├─ models/
-│  ├─ routes/
-│  ├─ utils/
-│  └─ server.js
+│  ├─ src/
+│  ├─ uploads/
 ├─ frontend/
 │  ├─ src/
 │  │  ├─ components/
 │  │  ├─ pages/
-│  │  ├─ store/
+│  │  ├─ utils/
 │  │  └─ App.jsx
 ├─ .env
 └─ README.md
-
-Security ⚡
-
-Passwords hashed using bcrypt.
-
-JWT authentication with token expiration.
-
-Vault data encrypted before storage.
-
-No sensitive data exposed in frontend or network requests.
