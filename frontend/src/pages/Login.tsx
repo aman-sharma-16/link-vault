@@ -2,12 +2,10 @@ import { useState } from "react";
 import { LuLink } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
-
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

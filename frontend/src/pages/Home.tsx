@@ -1,4 +1,5 @@
 import { LuLink } from "react-icons/lu";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -10,11 +11,11 @@ const Home = () => {
           </div>
           <span className="font-semibold tracking-wider">Secure Vault</span>
         </div>
-        <a href="/login">
+        <Link to={localStorage.getItem("token") ? "/upload" : "/login"}>
           <button className="bg-black/80 text-white px-4 py-1 rounded-md w-24 h-7 hover:bg-black transition-colors duration-300 flex items-center justify-center text-xs font-semibold tracking-wider">
             Login
           </button>
-        </a>
+        </Link>
       </nav>
       <h1 className="text-6xl font-bold font-sans text-black">
         Welcome to Secure Vault
