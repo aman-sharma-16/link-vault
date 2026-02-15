@@ -107,38 +107,6 @@ link-vault/
 └─ README.md
 ```
 
-graph TD
-    %% Nodes
-    User([User])
-    FE[Frontend<br/>(React + Vite)]
-    BE[Backend<br/>(Node.js + Express)]
-    DB[(Database<br/>MongoDB/SQL)]
-    Store[Object Store<br/>(e.g., Firebase Storage)]
 
-    %% Flow
-    User -->|1. Input Text or Select File| FE
-    FE -->|2. POST Request (Data + Expiry)| BE
 
-    %% Backend Logic
-    BE -->|3. Check Content Type| Decision{Is it File<br/>or Text?}
 
-    %% Path A: File Upload
-    Decision -->|File| Store
-    Store -->|4. Upload File| Store
-    Store -.->|5. Return Public URL| BE
-    BE -->|6. Store File URL + Metadata| DB
-
-    %% Path B: Text Upload
-    Decision -->|Text| DB
-    BE -->|4. Store Raw Text + Metadata| DB
-
-    %% Completion
-    DB -.->|7. Confirm Save| BE
-    BE -->|8. Return Unique ID / Link| FE
-    FE -->|9. Display Shareable URL| User
-
-    %% Styling
-    style FE fill:#e1f5fe,stroke:#01579b
-    style BE fill:#fff3e0,stroke:#e65100
-    style DB fill:#e8f5e9,stroke:#1b5e20
-    style Store fill:#f3e5f5,stroke:#4a148c
