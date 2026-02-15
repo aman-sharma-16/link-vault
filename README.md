@@ -105,37 +105,41 @@ link-vault/
 │  │  └─ App.jsx
 ├─ .env
 └─ README.md
-sequenceDiagram
-    autonumber
-    actor User
-    participant FE as Frontend (React + Vite)
-    participant BE as Backend (Node + Express)
-    participant Cloud as Object Store (Firebase/S3)
-    participant DB as Database (MongoDB/SQL)
 
-    Note over User, FE: Step 1: User Input
-    User->>FE: Enters Text OR Selects File
-    User->>FE: (Optional) Sets Expiry Time
-    User->>FE: Clicks "Generate Link"
+## Sequential Flow
 
-    Note over FE, BE: Step 2: API Request
-    FE->>BE: POST /api/upload (Data + Expiry)
+graph TD
+    %% Nodes
+    User([User])
+    FE[Frontend<br/>(React + Vite)]
+    BE[Backend<br/>(Node.js + Express)]
+    DB[(Database<br/>MongoDB/SQL)]
+    Store[Object Store<br/>(e.g., Firebase Storage)]
 
-    rect rgb(240, 248, 255)
-        Note right of BE: Step 3: Processing
-        alt is File Upload
-            BE->>Cloud: Upload File Stream 
-            Cloud-->>BE: Return Download URL
-            BE->>DB: INSERT {id, type: 'file', fileUrl, expiry}
-        else is Text Upload
-            BE->>DB: INSERT {id, type: 'text', content, expiry}
-        end
-    end
+    %% Flow
+    User -->|1. Input Text or Select File| FE
+    FE -->|2. POST Request (Data + Expiry)| BE
 
-    DB-->>BE: Return Success & Record ID
-    
-    Note over BE, FE: Step 4: Link Generation
-    BE->>BE: Generate Short URL (e.g., linkvault.com/x9z1) [cite: 23]
-    BE-->>FE: Return Short URL
+    %% Backend Logic
+    BE -->|3. Check Content Type| Decision{Is it File<br/>or Text?}
 
-    FE-->>User: Display Shareable Link
+    %% Path A: File Upload
+    Decision -->|File| Store
+    Store -->|4. Upload File| Store
+    Store -.->|5. Return Public URL| BE
+    BE -->|6. Store File URL + Metadata| DB
+
+    %% Path B: Text Upload
+    Decision -->|Text| DB
+    BE -->|4. Store Raw Text + Metadata| DB
+
+    %% Completion
+    DB -.->|7. Confirm Save| BE
+    BE -->|8. Return Unique ID / Link| FE
+    FE -->|9. Display Shareable URL| User
+
+    %% Styling
+    style FE fill:#e1f5fe,stroke:#01579b
+    style BE fill:#fff3e0,stroke:#e65100
+    style DB fill:#e8f5e9,stroke:#1b5e20
+    style Store fill:#f3e5f5,stroke:#4a148c
