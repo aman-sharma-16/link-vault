@@ -105,8 +105,7 @@ link-vault/
 │  │  └─ App.jsx
 ├─ .env
 └─ README.md
-
-## Sequential Flow
+```
 
 graph TD
     %% Nodes
