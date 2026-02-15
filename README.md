@@ -105,3 +105,37 @@ link-vault/
 │  │  └─ App.jsx
 ├─ .env
 └─ README.md
+sequenceDiagram
+    autonumber
+    actor User
+    participant FE as Frontend (React + Vite)
+    participant BE as Backend (Node + Express)
+    participant Cloud as Object Store (Firebase/S3)
+    participant DB as Database (MongoDB/SQL)
+
+    Note over User, FE: Step 1: User Input
+    User->>FE: Enters Text OR Selects File
+    User->>FE: (Optional) Sets Expiry Time
+    User->>FE: Clicks "Generate Link"
+
+    Note over FE, BE: Step 2: API Request
+    FE->>BE: POST /api/upload (Data + Expiry)
+
+    rect rgb(240, 248, 255)
+        Note right of BE: Step 3: Processing
+        alt is File Upload
+            BE->>Cloud: Upload File Stream 
+            Cloud-->>BE: Return Download URL
+            BE->>DB: INSERT {id, type: 'file', fileUrl, expiry}
+        else is Text Upload
+            BE->>DB: INSERT {id, type: 'text', content, expiry}
+        end
+    end
+
+    DB-->>BE: Return Success & Record ID
+    
+    Note over BE, FE: Step 4: Link Generation
+    BE->>BE: Generate Short URL (e.g., linkvault.com/x9z1) [cite: 23]
+    BE-->>FE: Return Short URL
+
+    FE-->>User: Display Shareable Link
