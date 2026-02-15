@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LuLink } from "react-icons/lu";
 import { Link } from "react-router-dom";
 
@@ -11,6 +11,14 @@ const Upload = () => {
   const [maxViews, setMaxViews] = useState<number | null>(null);
   const [url, setUrl] = useState("");
 
+  useEffect(() => {
+    setFile(null);
+    setTextContent("");
+    setExpiresAt("10");
+    setPassword("");
+    setMaxViews(null);
+    setUrl("");
+  }, []);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);

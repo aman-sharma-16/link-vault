@@ -145,13 +145,13 @@ const View = () => {
           </button>
 
           {/* Error displayed INSIDE the password block */}
-          {error && <p className="text-red-500">{error}</p>}
+          {error && <p className="text-black">{error}</p>}
         </>
       )}
 
       {/* Show generic error only if NOT in password mode (to avoid duplicates) */}
       {!requiresPassword && error && (
-        <h1 className="text-2xl font-bold text-red-500">{error}</h1>
+        <h1 className="text-2xl font-bold text-black">{error}</h1>
       )}
 
       {/* TEXT VAULT */}
@@ -174,7 +174,7 @@ const View = () => {
       {vaultData?.type === "FILE" && (
         <button
           onClick={handleDownloadFile}
-          className="bg-green-600 text-white px-4 py-2 rounded-md"
+          className="bg-black cursor-pointer text-white px-4 py-2 rounded-md"
         >
           Download File
         </button>
