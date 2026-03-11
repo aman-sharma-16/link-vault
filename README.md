@@ -26,7 +26,7 @@ A secure, user-friendly web application to store, manage, and share your sensiti
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/your-username/link-vault.git](https://github.com/your-username/link-vault.git)
+    git clone https://github.com/aman-sharma-16/link-vault.git
     cd link-vault/backend
     ```
 
