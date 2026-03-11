@@ -66,7 +66,7 @@ A secure, user-friendly web application to store, manage, and share your sensiti
     ```
 
 4.  **Access the App:**
-    Open [http://localhost:5173](http://localhost:5173) in your browser.
+    Open http://localhost:5173 in your browser.
 
 ## Usage 📝
 
