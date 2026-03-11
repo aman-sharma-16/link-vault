@@ -19,6 +19,7 @@ const Upload = () => {
     setMaxViews(null);
     setUrl("");
   }, []);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
@@ -88,11 +89,23 @@ const Upload = () => {
           </div>
           <span className="font-semibold tracking-wider">Secure Vault</span>
         </div>
-        <Link to="/dashboard">
-          <button className="bg-black/80 text-white px-4 py-1 rounded-md w-24 h-7 hover:bg-black transition-colors duration-300 flex items-center justify-center text-xs font-semibold tracking-wider">
-            Dashboard
-          </button>
-        </Link>
+        <div className="flex gap-x-2">
+          <Link to="/">
+            <button
+              className="bg-black/80 text-white px-4 py-1 rounded-md w-24 h-7 hover:bg-black transition-colors duration-300 flex items-center justify-center text-xs font-semibold tracking-wider"
+              onClick={() => {
+                localStorage.setItem("token", "");
+              }}
+            >
+              Log Out
+            </button>
+          </Link>
+          <Link to="/dashboard">
+            <button className="bg-black/80 text-white px-4 py-1 rounded-md w-24 h-7 hover:bg-black transition-colors duration-300 flex items-center justify-center text-xs font-semibold tracking-wider">
+              Dashboard
+            </button>
+          </Link>
+        </div>
       </nav>
       <main className="w-160 items-center bg-white/5 shadow-md flex flex-col gap-y-4 p-4 rounded-lg">
         <h1 className="text-3xl font-bold">Upload File</h1>

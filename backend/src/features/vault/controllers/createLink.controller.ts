@@ -49,7 +49,7 @@ export const vaultPostController = async (
         Date.now() + (validatedEntry.data.expiresAt! * 60 || 10 * 60) * 1000,
       ),
       password: hashedPassword,
-      maxViews: validatedEntry.data.maxViews,
+      maxViews: validatedEntry.data.maxViews ? validatedEntry.data.maxViews + 1 : 100,
     });
 
     await savedEntry.save();

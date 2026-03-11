@@ -1,26 +1,24 @@
-import { responseType } from "@/constants/types/ResponseType";
 import bcryptjs from "bcryptjs";
-
 import { NextFunction, Request, Response } from "express";
 import { vault_zod_getData_schema } from "../zodValidations/vault.zod.getData.schema";
 import { statusCode } from "@/constants/statusCodeInfo";
 import VAULT_model from "../db/vault.db.model";
 import path from "path";
+import fs from "fs";
 
 export const getDataController = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  let response: responseType;
-
   try {
-    const data = req.body;
     const { token: userSendedToken } = req.params;
+    const { password } = req.body;
 
+    // 1️⃣ Validate input
     const validatedData = await vault_zod_getData_schema.safeParseAsync({
-      password: data.password,
       token: userSendedToken,
+      password,
     });
 
     if (!validatedData.success) {
@@ -30,10 +28,11 @@ export const getDataController = async (
       });
     }
 
-    const { token, password } = validatedData.data;
-    // Step 1: Find share WITHOUT increment
+    const { token } = validatedData.data;
+
+    // 2️⃣ Find vault entry
     const share = await VAULT_model.findOne({
-      token ,
+      token,
       isExpired: false,
       expiresAt: { $gt: new Date() },
     });
@@ -45,7 +44,7 @@ export const getDataController = async (
       });
     }
 
-    // Step 2: Password Check (if exists)
+    // 3️⃣ Password check
     if (share.password) {
       if (!password) {
         return res.status(statusCode.FORBIDDEN).json({
@@ -64,45 +63,58 @@ export const getDataController = async (
       }
     }
 
-    // Step 3: Atomic View Increment Check
-    const updatedShare = await VAULT_model.findOneAndUpdate(
-      {
-        _id: share._id,
-        $or: [
-          { maxViews: null },
-          { $expr: { $lt: ["$viewCount", "$maxViews"] } },
-        ],
-        isExpired: false,
-      },
-      { $inc: { viewCount: 1 } },
-      { returnDocument: "after" },
-    );
-
-    if (!updatedShare) {
+    // 4️⃣ Check view limit
+    if (share.maxViews !== null && share.viewCount >= share.maxViews) {
       return res.status(statusCode.FORBIDDEN).json({
         success: false,
         message: "View limit exceeded",
       });
     }
 
-    // 🟢 TEXT case
-    if (updatedShare.type === "TEXT") {
+    // 5️⃣ TEXT case
+    if (share.type === "TEXT") {
+      await VAULT_model.updateOne(
+        { _id: share._id },
+        { $inc: { viewCount: 1 } }
+      );
+
       return res.status(200).json({
         success: true,
         data: {
           type: "TEXT",
-          textContent: updatedShare.textContent,
+          textContent: share.textContent,
         },
       });
     }
 
-    // 🟢 FILE case (LOCAL STORAGE)
-    if (updatedShare.type === "FILE" && updatedShare.file) {
-      const filePath = path.resolve(updatedShare.file.url!);
+    // 6️⃣ FILE case
+    if (share.type === "FILE" && share.file) {
+      const normalizedPath = share.file.url.replace(/\\/g, "/");
+      const filePath = path.join(process.cwd(), normalizedPath);
 
-      return res.download(filePath, updatedShare.file.originalName!);
+      if (!fs.existsSync(filePath)) {
+        return res.status(404).json({
+          success: false,
+          message: "File not found",
+        });
+      }
+
+      return res.download(filePath, share.file.originalName!, async (err) => {
+        if (!err) {
+          await VAULT_model.updateOne(
+            { _id: share._id },
+            { $inc: { viewCount: 1 } }
+          );
+        }
+      });
     }
-  } catch (error: any) {
+
+    return res.status(500).json({
+      success: false,
+      message: "Invalid vault data",
+    });
+
+  } catch (error) {
     next(error);
   }
 };

@@ -62,11 +62,11 @@ const Dashboard = () => {
       <main>
         <h1 className="text-2xl font-bold">Your Vaults</h1>
         <p className="text-black">Manage your secure vaults here.</p>
-        <div className="mt-6 flex flex-col gap-4">
+        <div className="mt-6 flex flex-col gap-4 h-[60dvh] p-4 rounded-lg shadow-md w-full overflow-y-scroll">
           {data.map((vault: any) => (
             <div
               key={vault._id}
-              className="flex justify-end items-center gap-4 h-24"
+              className="flex justify-end items-center gap-4 h-24 mb-8"
             >
               <div
                 className="bg-black/80 p-4 rounded-lg shadow-md hover:bg-black/70 transition-colors duration-300 cursor-pointer w-full"
