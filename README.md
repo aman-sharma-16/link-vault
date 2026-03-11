@@ -75,7 +75,6 @@ A secure, user-friendly web application to store, manage, and share your sensiti
 * **Add Links:** Store links along with optional passwords or notes.
 * **View Vault:** Access all saved links securely.
 * **Download Vault:** Export your vault for backup purposes.
-* **Logout:** Safely end your session.
 
 ## API Endpoints 🔗
 
